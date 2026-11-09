@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northwind Outdoor — practice target</title>
+<!--
+  ============================================================
+  PRACTICE TARGET
+  Paste your GTM container snippet in the <head> and <body>
+  slots marked below, then work through DRILLS.md.
+  ============================================================
+-->
+<!-- GTM HEAD SNIPPET GOES HERE -->
+
+<style>
+  :root { --ink:#1c2321; --muted:#5b6b68; --line:#dde3e1; --accent:#0b6e4f; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:#fbfcfb; }
+  header { border-bottom:1px solid var(--line); padding:16px 24px; display:flex; gap:24px; align-items:center; background:#fff; position:sticky; top:0; }
+  header h1 { font-size:18px; margin:0; }
+  nav { display:flex; gap:4px; margin-left:auto; }
+  nav a { padding:8px 12px; border-radius:6px; text-decoration:none; color:var(--muted); font-size:14px; }
+  nav a:hover { background:#f0f4f2; color:var(--ink); }
+  main { max-width:920px; margin:0 auto; padding:32px 24px 96px; }
+  h2 { font-size:24px; margin:0 0 6px; }
+  .sub { color:var(--muted); margin:0 0 28px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; }
+  .card { border:1px solid var(--line); border-radius:10px; padding:16px; background:#fff; }
+  .card h3 { font-size:15px; margin:0 0 4px; }
+  .price { color:var(--accent); font-weight:600; }
+  button { font:inherit; cursor:pointer; border-radius:7px; border:1px solid var(--line); background:#fff; padding:9px 14px; }
+  button:hover { background:#f4f7f6; }
+  .primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .primary:hover { background:#095c42; }
+  .view { display:none; }
+  .view.active { display:block; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }
+  fieldset { border:1px solid var(--line); border-radius:10px; padding:20px; background:#fff; }
+  label { display:block; font-size:13px; color:var(--muted); margin:12px 0 4px; }
+  input, select, textarea { width:100%; padding:9px; border:1px solid var(--line); border-radius:7px; font:inherit; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .note { background:#f2f7f4; border-left:3px solid var(--accent); padding:12px 16px; font-size:14px; margin:24px 0; border-radius:0 7px 7px 0; }
+  .totals { display:flex; gap:24px; margin-top:16px; font-weight:600; }
+  footer { border-top:1px solid var(--line); color:var(--muted); font-size:13px; padding:20px 24px; text-align:center; }
+</style>
+</head>
+<body>
+<!-- GTM BODY SNIPPET GOES HERE -->
+
+<header>
+  <h1>Northwind Outdoor</h1>
+  <nav>
+    <a href="#/" data-nav>Shop</a>
+    <a href="#/cart" data-nav>Cart <span id="navCartCount" data-cart-count>0</span></a>
+    <a href="#/contact" data-nav>Contact</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ── SHOP ─────────────────────────────────────────────── -->
+  <section class="view active" id="view-shop">
+    <h2>Gear built for the long way round</h2>
+    <p class="sub">Four products. Every card has tracking hooks and deliberate gaps — see DRILLS.md.</p>
+
+    <div class="grid" id="productGrid">
+      <article class="card"
+               data-item-id="SKU-TENT-01"
+               data-item-name="Ridgeline 2P Tent"
+               data-item-category="Shelter"
+               data-price="489.00">
+        <h3>Ridgeline 2P Tent</h3>
+        <p class="price">$489.00</p>
+        <button class="add" data-add>Add to cart</button>
+      </article>
+
+      <article class="card"
+               data-item-id="SKU-PACK-02"
+               data-item-name="Haul 45L Pack"
+               data-item-category="Bags"
+               data-price="219.00">
+        <h3>Haul 45L Pack</h3>
+        <p class="price">$219.00</p>
+        <button class="add" data-add>Add to cart</button>
+      </article>
+
+      <article class="card"
+               data-item-id="SKU-STOVE-03"
+               data-item-name="Whisper Stove"
+               data-item-category="Cooking"
+               data-price="149.00">
+        <h3>Whisper Stove</h3>
+        <p class="price">$149.00</p>
+        <button class="add" data-add>Add to cart</button>
+      </article>
+
+      <!-- DRILL: this card has NO data-item-category. Your tag must not break. -->
+      <article class="card"
+               data-item-id="SKU-LAMP-04"
+               data-item-name="Firefly Lantern"
+               data-price="59.00">
+        <h3>Firefly Lantern</h3>
+        <p class="price">$59.00</p>
+        <button class="add" data-add>Add to cart</button>
+      </article>
+    </div>
+
+    <div class="note">
+      <strong>Practice note.</strong> Only two of these four cards will ever reach GA4 as
+      <code>add_to_cart</code> until you fix the gap. One has a missing attribute and one has a
+      duplicate listener. Find both, then build the tag that handles it.
+    </div>
+
+    <p><button class="primary" id="newsletterBtn" data-newsletter>Join the trail newsletter</button></p>
+  </section>
+
+  <!-- ── CART ─────────────────────────────────────────────── -->
+  <section class="view" id="view-cart">
+    <h2>Your cart</h2>
+    <table>
+      <thead><tr><th>Item</th><th>Qty</th><th>Price</th></tr></thead>
+      <tbody id="cartBody"><tr><td colspan="3" style="color:var(--muted)">Nothing here yet.</td></tr></tbody>
+    </table>
+    <div class="totals" id="cartTotals" style="display:none">
+      <span>Subtotal: <span id="cartSubtotal">$0.00</span></span>
+      <span>Shipping: <span id="cartShip">$0.00</span></span>
+      <span>Total: <span id="cartGrand">$0.00</span></span>
+    </div>
+    <p><button class="primary" id="checkoutBtn" data-checkout disabled>Checkout</button></p>
+  </section>
+
+  <!-- ── CONTACT ──────────────────────────────────────────── -->
+  <section class="view" id="view-contact">
+    <h2>Talk to us</h2>
+    <p class="sub">A real form that submits over fetch — the native GTM Form trigger will not fire on it.</p>
+    <form id="enquiryForm">
+      <div class="row">
+        <div><label for="fname">First name</label><input id="fname" name="first_name" required></div>
+        <div><label for="lname">Last name</label><input id="lname" name="last_name" required></div>
+      </div>
+      <label for="email">Email</label><input id="email" name="email" type="email" required>
+      <label for="topic">Topic</label>
+      <select id="topic" name="topic"><option>Order query</option><option>Warranty</option><option>Wholesale</option></select>
+      <label for="msg">Message</label><textarea id="msg" name="message" rows="4"></textarea>
+      <p style="margin-top:18px"><button class="primary" type="submit" id="enquirySubmit" data-enquiry-submit>Send enquiry</button></p>
+    </form>
+    <div id="formThanks" style="display:none" class="note">Thanks — we'll be in touch.</div>
+  </section>
+</main>
+
+<footer>Northwind Outdoor — practice target for a live tracking assessment.</footer>
+
+<script>
+/* ============================================================
+   dataLayer bootstrap. In production this lives above the GTM
+   snippet; here it runs after, which is itself a lesson.
+   ============================================================ */
+window.dataLayer = window.dataLayer || [];
+
+/* ------------------------------------------------------------
+   CART STATE
+   ------------------------------------------------------------ */
+const cart = [];
+
+function money(n) { return '$' + n.toFixed(2); }
+
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  if (!cart.length) {
+    body.innerHTML = '<tr><td colspan="3" style="color:var(--muted)">Nothing here yet.</td></tr>';
+    document.getElementById('cartTotals').style.display = 'none';
+    document.getElementById('checkoutBtn').disabled = true;
+    return;
+  }
+  body.innerHTML = cart.map(function (l) {
+    return '<tr><td>' + l.name + '</td><td>' + l.qty + '</td><td>' + money(l.price * l.qty) + '</td></tr>';
+  }).join('');
+  const sub = cart.reduce(function (t, l) { return t + l.price * l.qty; }, 0);
+  const ship = sub > 150 ? 0 : 12.5;
+  document.getElementById('cartSubtotal').textContent = money(sub);
+  document.getElementById('cartShip').textContent = money(ship);
+  document.getElementById('cartGrand').textContent = money(sub + ship);
+  document.getElementById('cartTotals').style.display = 'flex';
+  document.getElementById('checkoutBtn').disabled = false;
+}
+
+/* ------------------------------------------------------------
+   ADD TO CART
+   Deliberate bugs to find:
+   1. data-item-category may be undefined -> pushed as undefined
+   2. this listener is attached TWICE for cards 1 and 2 below,
+      so those fire two identical dataLayer events
+   ------------------------------------------------------------ */
+function handleAddClick(e) {
+  const btn = e.currentTarget;
+  const card = btn.closest('.card');
+  const item = {
+    item_id:       card.dataset.itemId,
+    item_name:     card.dataset.itemName,
+    item_category: card.dataset.itemCategory,   // undefined for the lantern
+    price:         Number(card.dataset.price),
+    quantity:      1
+  };
+
+  window.dataLayer.push({ ecommerce: null });   // clear previous ecommerce object
+  window.dataLayer.push({
+    event: 'add_to_cart',
+    ecommerce: { currency: 'AUD', value: item.price, items: [item] }
+  });
+
+  const existing = cart.find(function (l) { return l.id === item.item_id; });
+  if (existing) { existing.qty += 1; }
+  else { cart.push({ id: item.item_id, name: item.item_name, price: item.price, qty: 1 }); }
+
+  document.getElementById('navCartCount').textContent = cart.reduce(function (t, l) { return t + l.qty; }, 0);
+  renderCart();
+}
+
+document.querySelectorAll('[data-add]').forEach(function (btn, i) {
+  btn.addEventListener('click', handleAddClick);
+  // BUG: cards 0 and 1 get a second listener -> duplicate events.
+  if (i === 0 || i === 1) btn.addEventListener('click', handleAddClick);
+});
+
+/* ------------------------------------------------------------
+   CHECKOUT
+   ------------------------------------------------------------ */
+document.getElementById('checkoutBtn').addEventListener('click', function () {
+  if (!cart.length) return;
+  const value = cart.reduce(function (t, l) { return t + l.price * l.qty; }, 0);
+  const items = cart.map(function (l) {
+    return { item_id: l.id, item_name: l.name, price: l.price, quantity: l.qty };
+  });
+
+  // BUG: no ecommerce:null reset here, unlike add_to_cart.
+  window.dataLayer.push({
+    event: 'purchase',
+    ecommerce: {
+      transaction_id: 'NW-' + Math.floor(Math.random() * 900000 + 100000),
+      currency: 'AUD',
+      value: value,
+      shipping: value > 150 ? 0 : 12.5,
+      items: items
+    }
+  });
+
+  cart.length = 0;
+  document.getElementById('navCartCount').textContent = '0';
+  renderCart();
+  location.hash = '#/';
+});
+
+/* ------------------------------------------------------------
+   SPA ROUTER
+   No virtual pageview is pushed on route change — you must add it.
+   ------------------------------------------------------------ */
+function route() {
+  const h = location.hash.replace('#/', '') || 'shop';
+  document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+  const el = document.getElementById('view-' + h);
+  (el || document.getElementById('view-shop')).classList.add('active');
+  // TODO (drill): push a virtual pageview event here.
+}
+window.addEventListener('hashchange', route);
+route();
+
+/* ------------------------------------------------------------
+   ENQUIRY FORM — submits via fetch, no page reload.
+   GTM's built-in Form trigger will NOT fire on this.
+   ------------------------------------------------------------ */
+document.getElementById('enquiryForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const topic = document.getElementById('topic').value;
+  window.dataLayer.push({
+    event: 'generate_lead',
+    form_name: 'contact_enquiry',
+    form_topic: topic
+  });
+  document.getElementById('enquiryForm').style.display = 'none';
+  document.getElementById('formThanks').style.display = 'block';
+});
+
+/* ------------------------------------------------------------
+   NEWSLETTER — opens a modal-style prompt, no dataLayer event.
+   TODO (drill): track the click and the resulting signup.
+   ------------------------------------------------------------ */
+document.getElementById('newsletterBtn').addEventListener('click', function () {
+  alert('Newsletter signup — this click is currently UNTRACKED. Fix it.');
+});
+</script>
+</body>
+</html>
