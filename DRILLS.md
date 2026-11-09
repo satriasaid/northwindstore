@@ -73,7 +73,30 @@ Build these in GTM, in this order. Each one: create → Preview → verify → p
 2. **Contact form.** Because of bug 3, you cannot use the Form trigger. Use a **Custom Event**
    trigger on `generate_lead` and map `form_topic` through a **Data Layer Variable**.
    This is the drill that will come up in the interview.
-3. **Virtual pageview.** Add the push inside `route()`, then a Custom Event trigger on it.
+3. **Virtual pageview.** Nothing fires until the page pushes an event, so do these in order:
+   1. **Page code.** In `index.html`, replace the `// TODO (drill)` line inside `route()` with:
+      ```js
+      window.dataLayer.push({
+        event: 'virtual_pageview',
+        virtualPagePath: '/' + h,
+        virtualPageTitle: document.title + ' – ' + h
+      });
+      ```
+      Redeploy to Netlify. Without this, Preview will never show a `virtual_pageview` event.
+   2. **Variables** (Variables → User-Defined → New, type **Data Layer Variable**). Create both
+      before the tag, or Validate container shows "Unknown variable" errors:
+      - Name `DLV - virtualPagePath`, Data Layer Variable Name `virtualPagePath`
+      - Name `DLV - virtualPageTitle`, Data Layer Variable Name `virtualPageTitle`
+
+      The name field is the label GTM shows. The Data Layer Variable Name field is the key in the
+      dataLayer. They are different fields.
+   3. **Trigger.** Type **Custom Event**, event name `virtual_pageview` (exact match), fires on All Custom Events.
+   4. **Tag.** Type **Google Analytics: GA4 Event**, named `GA4 - Virtual Page View`. Pick your GA4
+      configuration tag (or enter the Measurement ID), event name `page_view`, and add the
+      parameters `page_location` = `https://northwindstore.netlify.app{{DLV - virtualPagePath}}`
+      and `page_title` = `{{DLV - virtualPageTitle}}`. Attach the trigger above.
+   5. **Verify.** In Preview, click between the Shop, Contact and Checkout views. Each click should
+      add a `virtual_pageview` event to the stream, with `GA4 - Virtual Page View` under Tags Fired.
 4. **Scroll depth** on the shop page.
 
 ### Session 3 — Variables, properly

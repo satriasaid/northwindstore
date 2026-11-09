@@ -266,7 +266,11 @@ function route() {
   document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
   const el = document.getElementById('view-' + h);
   (el || document.getElementById('view-shop')).classList.add('active');
-  // TODO (drill): push a virtual pageview event here.
+  window.dataLayer.push({
+  event: 'virtual_pageview',
+  virtualPagePath: '/' + h,
+  virtualPageTitle: document.title + ' – ' + h
+});
 }
 window.addEventListener('hashchange', route);
 route();
