@@ -152,6 +152,56 @@
       <p style="margin-top:18px"><button class="primary" type="submit" id="enquirySubmit" data-enquiry-submit>Send enquiry</button></p>
     </form>
     <div id="formThanks" style="display:none" class="note">Thanks — we'll be in touch.</div>
+
+    <!-- ══════════════════════════════════════════════════════
+         CLICK-TRIGGER TEST FIXTURES
+         Six links, one per trigger type in the GTM playbook.
+         Each exists so you can prove a trigger fired.
+         ══════════════════════════════════════════════════════ -->
+    <h3 style="margin-top:36px">Click-trigger test fixtures</h3>
+    <p class="sub">One link per trigger type. Open Preview, click each, confirm it appears in the event stream.</p>
+
+    <table>
+      <thead><tr><th>Fixture</th><th>Link</th><th>Should fire</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Outbound — external domain</td>
+          <td><a href="https://www.example.com/partner" id="outboundLink">Visit partner site</a></td>
+          <td><code>Click – Just Links</code> → <code>{{Click URL}}</code> not containing <code>localhost</code></td>
+        </tr>
+        <tr>
+          <td>Outbound — same domain (control)</td>
+          <td><a href="/index.html#/cart">Internal link to cart</a></td>
+          <td><strong>Should NOT fire</strong> — this is your negative test</td>
+        </tr>
+        <tr>
+          <td>Mailto</td>
+          <td><a href="mailto:hello@northwind.test" id="mailtoLink">Email us</a></td>
+          <td><code>Click – Just Links</code> → starts with <code>mailto:</code></td>
+        </tr>
+        <tr>
+          <td>Tel</td>
+          <td><a href="tel:+61290001234" id="telLink">Call us</a></td>
+          <td><code>Click – Just Links</code> → starts with <code>tel:</code></td>
+        </tr>
+        <tr>
+          <td>Class selector</td>
+          <td><a href="#" class="cta-primary" id="classCta">Book a fitting</a></td>
+          <td><code>Click – All Elements</code> → <code>{{Click Element}}</code> matches <code>.cta-primary</code></td>
+        </tr>
+        <tr>
+          <td>ID selector</td>
+          <td><a href="#" id="hero-cta" class="cta-primary">Shop the range</a></td>
+          <td><code>{{Click Element}}</code> matches <code>#hero-cta</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Why two of these say "should NOT fire".</strong> A trigger that fires on everything
+      looks identical to a trigger that fires correctly, unless you also test something that
+      should be excluded. That negative test is what an interviewer means by "have you validated it".
+    </div>
   </section>
 </main>
 

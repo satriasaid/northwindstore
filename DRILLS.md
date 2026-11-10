@@ -70,10 +70,26 @@ Build these in GTM, in this order. Each one: create → Preview → verify → p
    **Click - All Elements** trigger with a CSS selector on `#newsletterBtn`, then a GA4 Event
    tag sending `newsletter_click`. *Then* fix it properly by adding the push to the page and
    switching to a Custom Event trigger — and be ready to say why the second way is better.
-2. **Contact form.** Because of bug 3, you cannot use the Form trigger. Use a **Custom Event**
-   trigger on `generate_lead` and map `form_topic` through a **Data Layer Variable**.
+2. **Contact form.** Because of bug 3, you cannot use the Form trigger. The page already pushes
+   `generate_lead` (with `form_name` and `form_topic`) when the form is submitted. Build, in this order:
+   1. **Variables** (type **Data Layer Variable**): `DLV - form_topic` with key `form_topic`, and
+      `DLV - form_name` with key `form_name`.
+   2. **Trigger:** **Custom Event**, event name `generate_lead`.
+   3. **Tag:** **GA4 Event**, event name `generate_lead`, parameters `form_topic` = `{{DLV - form_topic}}`
+      and `form_name` = `{{DLV - form_name}}`. Attach the trigger.
+   4. **Verify:** submit the form in Preview. `generate_lead` should appear in the stream with the tag fired.
+
    This is the drill that will come up in the interview.
-3. **Virtual pageview.** Nothing fires until the page pushes an event, so do these in order:
+3. **Virtual pageview.** In a single-page app the browser never reloads between views, so GA4 gets
+   no `page_view` for them and GTM can't see the change. The page's code has to push an event.
+
+   **How to tell in real life:** click through the site in Preview. If the content changes but no
+   new Page View appears in the event stream, it's a single-page app. Other clues: `#/` in the URL,
+   `<div id="root">` or `<div id="app">` in the source, or only XHR/fetch calls in the Network tab on
+   navigation. Dev teams won't always tell you, so check this yourself and ask: "Do you push a
+   dataLayer event on route change?"
+
+   Nothing fires until the page pushes an event, so do these in order:
    1. **Page code.** In `index.html`, replace the `// TODO (drill)` line inside `route()` with:
       ```js
       window.dataLayer.push({
