@@ -277,7 +277,10 @@ function handleAddClick(e) {
 document.querySelectorAll('[data-add]').forEach(function (btn, i) {
   btn.addEventListener('click', handleAddClick);
   // BUG: cards 0 and 1 get a second listener -> duplicate events.
-  if (i === 0 || i === 1) btn.addEventListener('click', handleAddClick);
+  // It must be a DIFFERENT function object. Adding the identical reference twice
+  // is ignored by the browser, which is why naive "add it twice" code often
+  // does not double-fire, and why this bug is so easy to ship by accident.
+  if (i === 0 || i === 1) btn.addEventListener('click', function (e) { handleAddClick(e); });
 });
 
 /* ------------------------------------------------------------
