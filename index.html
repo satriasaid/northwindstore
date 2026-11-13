@@ -11,7 +11,7 @@
   slots marked below, then work through DRILLS.md.
   ============================================================
 -->
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-P65RK7H6"></script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KL72W485"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -113,9 +113,10 @@
     </div>
 
     <div class="note">
-      <strong>Practice note.</strong> Only two of these four cards will ever reach GA4 as
-      <code>add_to_cart</code> until you fix the gap. One has a missing attribute and one has a
-      duplicate listener. Find both, then build the tag that handles it.
+      <strong>Practice note.</strong> All four cards push <code>add_to_cart</code>, but the numbers
+      are wrong. Two of them push it <em>twice</em>, because they carry a duplicate click listener,
+      and one of them pushes an empty <code>item_category</code>. Find both, then build the tag
+      that handles it — see <code>DRILLS.md</code>, Part 2.
     </div>
 
     <p><button class="primary" id="newsletterBtn" data-newsletter>Join the trail newsletter</button></p>
@@ -167,7 +168,7 @@
         <tr>
           <td>Outbound — external domain</td>
           <td><a href="https://www.example.com/partner" id="outboundLink">Visit partner site</a></td>
-          <td><code>Click – Just Links</code> → <code>{{Click URL}}</code> not containing <code>localhost</code></td>
+          <td><code>Click – Just Links</code> → <code>{{Click URL}}</code> not containing <code>northwindstore.netlify.app</code></td>
         </tr>
         <tr>
           <td>Outbound — same domain (control)</td>
@@ -309,7 +310,8 @@ document.getElementById('checkoutBtn').addEventListener('click', function () {
 
 /* ------------------------------------------------------------
    SPA ROUTER
-   No virtual pageview is pushed on route change — you must add it.
+   The push below is already written for you. What's missing is
+   the GTM side that listens for it — see DRILLS.md, Session 2.3.
    ------------------------------------------------------------ */
 function route() {
   const h = location.hash.replace('#/', '') || 'shop';
